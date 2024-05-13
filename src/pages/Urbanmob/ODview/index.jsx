@@ -62,7 +62,7 @@ export default function ODview() {
     []
   );
   const { traj } = useMappedState(mapState);
-  const { flows, locations, config, customlayers } = traj;
+  const { config, customlayers } = traj;
   /*
       ---------------OD数据读取---------------
     */
@@ -78,14 +78,14 @@ export default function ODview() {
       reader.onload = function (f) {
         const data = f.target.result;
 
-        if (file.name.slice(-3) == "csv") {
+        if (file.name.slice(-3) === "csv") {
           let csvoption;
           if (
             data
               .slice(0, data.indexOf("\n"))
               .split(",")
               .map((f) => isNaN(f[0]))
-              .indexOf(false) == -1
+              .indexOf(false) === -1
           ) {
             //有列名
             csvoption = {};
@@ -144,7 +144,7 @@ export default function ODview() {
               });
             });
         }
-        if (file.name.slice(-4) == "json") {
+        if (file.name.slice(-4) === "json") {
           const jsondata = JSON.parse(data);
           setcustomlayers([
             ...customlayers,
@@ -195,33 +195,33 @@ export default function ODview() {
     const flows = data.map((f) => {
       const sname = f[SLON] + "," + f[SLAT];
       const ename = f[ELON] + "," + f[ELAT];
-      if (typeof locations_tmp[sname] == "undefined") {
-        if (COUNT == "=1") {
+      if (typeof locations_tmp[sname] === "undefined") {
+        if (COUNT === "=1") {
           locations_tmp[sname] = 1;
         } else {
           locations_tmp[sname] = parseFloat(f[COUNT]);
         }
       } else {
-        if (COUNT == "=1") {
+        if (COUNT === "=1") {
           locations_tmp[sname] += 1;
         } else {
           locations_tmp[sname] += parseFloat(f[COUNT]);
         }
       }
-      if (typeof locations_tmp[ename] == "undefined") {
-        if (COUNT == "=1") {
+      if (typeof locations_tmp[ename] === "undefined") {
+        if (COUNT === "=1") {
           locations_tmp[ename] = 1;
         } else {
           locations_tmp[ename] = parseFloat(f[COUNT]);
         }
       } else {
-        if (COUNT == "=1") {
+        if (COUNT === "=1") {
           locations_tmp[ename] += 1;
         } else {
           locations_tmp[ename] += parseFloat(f[COUNT]);
         }
       }
-      if (COUNT == "=1") {
+      if (COUNT === "=1") {
         return {
           origin: sname,
           dest: ename,
@@ -244,11 +244,7 @@ export default function ODview() {
         lat: parseFloat(key.split(",")[1]),
       });
     }
-    setmaxflow(
-      flows.reduce((x, y) => {
-        return x.count > y.count ? x : y;
-      }).count
-    );
+
     setconfig({
       ...config,
       maxTopFlowsDisplayNum: flows.reduce((x, y) => {
@@ -267,11 +263,7 @@ export default function ODview() {
 
         setlocations(locations);
         setflows(flows);
-        setmaxflow(
-          flows.reduce((x, y) => {
-            return x.count > y.count ? x : y;
-          }).count
-        );
+
         setconfig({
           ...config,
           maxTopFlowsDisplayNum: flows.reduce((x, y) => {
@@ -280,6 +272,7 @@ export default function ODview() {
         });
       });
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   /*
       ---------------设置改变---------------
@@ -289,7 +282,6 @@ export default function ODview() {
   const handleconfigchange = (d) => {
     setconfig({ ...config, ...d });
   };
-  const [maxflow, setmaxflow] = useState(100);
 
   return (
     <>

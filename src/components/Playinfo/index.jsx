@@ -34,7 +34,7 @@ export default function Playinfo() {
 
   //拖动进度条
   const changetime = (e) => {
-    if (play == false) {
+    if (play === false) {
       setTimelineval(e);
     }
     setMarks({
@@ -66,7 +66,7 @@ export default function Playinfo() {
   const addspeed = () => {
     let thisspeed = (speed + 1) % 4;
     let animationSpeed =
-      thisspeed == 1 ? 1 : thisspeed == 2 ? 2 : thisspeed == 3 ? 5 : 10;
+      thisspeed === 1 ? 1 : thisspeed === 2 ? 2 : thisspeed === 3 ? 5 : 10;
     publish("animationSpeed", animationSpeed);
     setSpeed(thisspeed);
   };
@@ -88,11 +88,11 @@ export default function Playinfo() {
               </Col>
               <Col span={2}>
                 <Button type="primary" shape="round" onClick={addspeed}>
-                  {speed == 1
+                  {speed === 1
                     ? "×1"
-                    : speed == 2
+                    : speed === 2
                     ? "×2"
-                    : speed == 3
+                    : speed === 3
                     ? "×5"
                     : "x10"}
                 </Button>

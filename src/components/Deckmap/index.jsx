@@ -14,7 +14,6 @@ import {
   AmbientLight,
   LightingEffect,
   MapView,
-  FirstPersonView,
   _SunLight as SunLight,
 } from "@deck.gl/core";
 //redux
@@ -106,15 +105,6 @@ export default function Deckmap() {
       .addEventListener("contextmenu", (evt) => evt.preventDefault());
   }, []);
 
-  //第一人称底图
-  const minimapBackgroundStyle = {
-    position: "absolute",
-    zIndex: -1,
-    width: "100%",
-    height: "100%",
-    background: "#aaa",
-    boxShadow: "0 0 8px 2px rgba(0,0,0,0.15)",
-  };
   //#endregion
   /*
   ---------------地图旋转按钮---------------
@@ -152,13 +142,12 @@ export default function Deckmap() {
     }
   }
   //镜头旋转工具
-  const [fristperson_isshow, setfristperson_isshow] = useState(false);
   const cameraTools = (
     <div className="mapboxgl-ctrl-group mapboxgl-ctrl">
       <button
         title="Rotatecam"
         onClick={rotatecam}
-        style={{ opacity: interval == 2000 ? 1 : 0.2 }}
+        style={{ opacity: interval === 2000 ? 1 : 0.2 }}
       >
         {" "}
         <span className="iconfont icon-camrotate" />
@@ -174,8 +163,7 @@ export default function Deckmap() {
         latitude: locations[parseInt(locations.length / 2)].lat,
       });
     }
-  }, [locations]);
-  const [flowcount, setflowcount] = useState(0);
+  }, [locations, viewState]);
   function getTooltipText(info) {
     if (!info.layer) {
     } else {
@@ -192,11 +180,6 @@ export default function Deckmap() {
     }
   }
   const getTooltip = useCallback((info) => getTooltipText(info), []);
-  const handelhover = (info, event) => {
-    if (info) {
-      setflowcount(info.count);
-    }
-  };
 
   //#endregion
   /*
@@ -226,7 +209,6 @@ export default function Deckmap() {
       getLocationLat: (loc) => loc.lat,
       getLocationLon: (loc) => loc.lon,
       getLocationCentroid: (location) => [location.lon, location.lat],
-      onHover: handelhover,
     }),
   ];
   //#endregion
@@ -312,21 +294,6 @@ export default function Deckmap() {
             {cameraTools}
           </div>
         </MapView>
-        {fristperson_isshow && (
-          <FirstPersonView
-            id="firstPerson"
-            controller={{ scrollZoom: false, dragRotate: true, inertia: true }}
-            far={10000}
-            focalDistance={1.5}
-            x={"68%"}
-            y={20}
-            width={"30%"}
-            height={"50%"}
-            clear={true}
-          >
-            <div style={minimapBackgroundStyle} />{" "}
-          </FirstPersonView>
-        )}
       </DeckGL>
     </div>
   );
