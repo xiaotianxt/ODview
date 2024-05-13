@@ -17,8 +17,6 @@ export default function Header(props) {
   //缩小sidebar
   function toggleCollapsed() {
     setCollapsed(!collapsed);
-    //导航至页面
-    publish("showpanel", !collapsed);
   }
   const menu = (
     <Menu>
