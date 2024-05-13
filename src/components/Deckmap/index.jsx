@@ -17,8 +17,6 @@ import {
   FirstPersonView,
   _SunLight as SunLight,
 } from "@deck.gl/core";
-import { BitmapLayer, IconLayer } from "@deck.gl/layers";
-import { TileLayer } from "@deck.gl/geo-layers";
 //redux
 import { useMappedState } from "redux-react-hook";
 
@@ -44,11 +42,6 @@ export default function Deckmap() {
   const { traj } = useMappedState(mapState);
 
   const { locations, flows, config, customlayers } = traj;
-
-  /*   const[customlayers, setcustomlayers]=useState([])
-
-  //dispatch
-  const dispatch = useDispatch() */
 
   //#endregion
   /*
@@ -104,14 +97,6 @@ export default function Deckmap() {
     zoom: 11,
     pitch: 0,
     bearing: 0,
-  });
-  //默认地图底图
-  const [mapStyle, setMapStyle] = React.useState("cl38pr5lx001f15nyyersk7in");
-
-  //订阅地图样式
-  unsubscribe("mapstyle");
-  useSubscribe("mapstyle", function (msg, data) {
-    setMapStyle(data);
   });
 
   useEffect(() => {
@@ -218,46 +203,6 @@ export default function Deckmap() {
   ---------------地图图层设置---------------
   */
   const layers = [
-    fristperson_isshow
-      ? new TileLayer({
-          // https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Tile_servers
-          data: `https://api.mapbox.com/styles/v1/mapbox/${mapStyle}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibmkxbzEiLCJhIjoiY2t3ZDgzMmR5NDF4czJ1cm84Z3NqOGt3OSJ9.yOYP6pxDzXzhbHfyk3uORg`,
-          minZoom: 0,
-          maxZoom: 19,
-          tileSize: 512,
-          renderSubLayers: (props) => {
-            const {
-              bbox: { west, south, east, north },
-            } = props.tile;
-            return new BitmapLayer(props, {
-              data: null,
-              image: props.data,
-              bounds: [west, south, east, north],
-            });
-          },
-        })
-      : null,
-    fristperson_isshow
-      ? new IconLayer({
-          //第一人称位置
-          id: "ref-point",
-          data: [
-            {
-              color: [68, 142, 247],
-              coords: [viewState.longitude, viewState.latitude],
-            },
-          ],
-          iconAtlas: "images/firstperson.png",
-          iconMapping: {
-            marker: { x: 0, y: 0, width: 200, height: 200, mask: true },
-          },
-          sizeScale: 5,
-          getIcon: (d) => "marker",
-          getPosition: (d) => [...d.coords, 30],
-          getSize: (d) => 5,
-          getColor: (d) => d.color,
-        })
-      : null,
     ...customlayers,
     new FlowmapLayer({
       id: "OD",
@@ -274,10 +219,6 @@ export default function Deckmap() {
       fadeEnabled: config.fadeEnabled,
       fadeAmount: config.fadeAmount,
       darkMode: config.darkMode,
-      /*       
-            locationLabelsEnabled: config.locationLabelsEnabled,
-            adaptiveScalesEnabled: config.adaptiveScalesEnabled,
-            highlightColor: config.highlightColor, */
       getFlowMagnitude: (flow) => flow.count || 0,
       getFlowOriginId: (flow) => flow.origin,
       getFlowDestId: (flow) => flow.dest,
