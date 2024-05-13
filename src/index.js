@@ -11,10 +11,7 @@ const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
 
 ReactDOM.render(
     //Provider包裹App，子组件可以收到store
-    <
-    StoreContext.Provider value = { store } >
-    <
-    App / >
-    <
-    /StoreContext.Provider>, document.getElementById('root')
+    <StoreContext.Provider value={store} >
+        <App />
+    </StoreContext.Provider>, document.getElementById('root')
 );
