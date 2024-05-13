@@ -163,7 +163,7 @@ export default function Deckmap() {
         latitude: locations[parseInt(locations.length / 2)].lat,
       });
     }
-  }, [locations, viewState]);
+  }, [locations]);
   function getTooltipText(info) {
     if (!info.layer) {
     } else {

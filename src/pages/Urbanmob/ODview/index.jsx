@@ -515,7 +515,7 @@ export default function ODview() {
         title="轨迹数据预览"
         width="80vw"
         height="80vh"
-        visible={isModalVisible}
+        open={isModalVisible}
         onOk={settraj}
         onCancel={() => {
           setisModalVisible(false);
